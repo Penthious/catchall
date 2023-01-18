@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: catch_all_api
+    build:
+      context: .
+      target: dev
+    command: "air start"
+    volumes:
+      - .:/build_api
+    network_mode: "host"
+    depends_on:
+      - db
+
+  db:
+    container_name: catch_all_db
+    image: postgres
+    restart: always
+    # binding to 5434 on the host machine as to not conflict with the other running postgres instance.
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: catch_all
+
